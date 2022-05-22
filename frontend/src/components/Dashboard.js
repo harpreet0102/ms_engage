@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
 import DetectFace from "./DetectFace";
+import DetectFace1 from "./DetectFace1";
 
 const Dashboard = () => {
   const [name, setName] = useState("");
@@ -61,7 +62,7 @@ const Dashboard = () => {
   return (
     <>
       <h1>Welcome Back!</h1>
-      <DetectFace></DetectFace>
+      <DetectFace1></DetectFace1>
     </>
   );
 };
