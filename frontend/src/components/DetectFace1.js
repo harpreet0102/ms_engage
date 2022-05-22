@@ -25,31 +25,29 @@ function DetectFace1() {
       faceapi.nets.ageGenderNet.loadFromUri("/models"),
       faceapi.nets.ssdMobilenetv1.loadFromUri("/models"),
     ]).then(() => {
-      if (navigator.mediaDevices.getUserMedia) {
-        setVideo(document.getElementById("video"));
-        navigator.mediaDevices
-          .getUserMedia({
-            video: {
-              width: 720,
-              height: 560,
-            },
-          })
-          .then(function (stream) {
-            //Display the video stream in the video object
-            let video = videoRef.current;
-            console.log("video", video);
+      setVideo(document.getElementById("video"));
+      navigator.mediaDevices
+        .getUserMedia({
+          video: {
+            width: 720,
+            height: 560,
+          },
+        })
+        .then(function (stream) {
+          //Display the video stream in the video object
+          let video = videoRef.current;
+          console.log("video", video);
 
-            video.srcObject = stream;
-            //Play the video stream
-            // video.autoPlay();
-            setIsLoaded(true);
-            console.log("Video : " + video);
-            addEvent();
-          })
-          .catch(function (e) {
-            console.log(e.name + ": " + e.message);
-          });
-      }
+          video.srcObject = stream;
+          //Play the video stream
+          // video.play();
+          setIsLoaded(true);
+          console.log("Video : " + video);
+          addEvent();
+        })
+        .catch(function (e) {
+          console.log(e.name + ": " + e.message);
+        });
 
       const getLabels = async () => {
         var list = [];
@@ -114,6 +112,7 @@ function DetectFace1() {
       function addEvent() {
         console.log("add event called");
         let video = document.getElementById("video");
+
         video.addEventListener("play", async () => {
           const canvas = await faceapi.createCanvasFromMedia(video);
           document.body.append(canvas);
