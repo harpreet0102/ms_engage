@@ -1,12 +1,33 @@
 import React, { useState } from "react";
 import "antd/dist/antd.css";
-import { Form, Input, Button, Checkbox, Card } from "antd";
+import { Form, Input, Button, Checkbox, Card, notification } from "antd";
 import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
-import { black, blue, green } from "color-name";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-function SignUpForm({ setShowLogin }) {
-  const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+function SignUpForm() {
+  const navigate = useNavigate();
+
+  const onFinish = async (values) => {
+    const { userName, email, password } = values;
+    try {
+      const { data } = await axios.post("http://localhost:4000/users", {
+        userName,
+        email,
+        password,
+      });
+      if (data.success) {
+        notification.success({
+          message: "User registered successfully!",
+          style: { height: 75 },
+        });
+      } else {
+        notification.error("Failed to register user");
+      }
+      // history.push("/");
+    } catch (error) {
+      notification.error("Failed to register user");
+    }
   };
   return (
     <div className="site-card-wrapper">
@@ -36,35 +57,21 @@ function SignUpForm({ setShowLogin }) {
           }}
         >
           <Form.Item
-            name="firstname"
+            name="userName"
             rules={[
               {
                 required: true,
-                message: "Please input your Firstname",
+                message: "Please input your Username",
               },
             ]}
           >
             <Input
               prefix={<UserOutlined className="site-form-item-icon" />}
               type="text"
-              placeholder="Firstname"
+              placeholder="Username"
             />
           </Form.Item>
-          <Form.Item
-            name="lastname"
-            rules={[
-              {
-                required: true,
-                message: "Please input your Lastname",
-              },
-            ]}
-          >
-            <Input
-              prefix={<UserOutlined className="site-form-item-icon" />}
-              type="text"
-              placeholder="Lastname"
-            />
-          </Form.Item>
+
           <Form.Item
             name="email"
             rules={[
@@ -113,19 +120,19 @@ function SignUpForm({ setShowLogin }) {
             >
               SignUp
             </Button>
-            <br />
-            <br />
-            Already have an account ?{" "}
-            <Button
-              type="primary"
-              htmlType="submit"
-              className="login-form-button"
-              onClick={(e) => setShowLogin(true)}
-            >
-              LogIn
-            </Button>
           </Form.Item>
         </Form>
+        <br />
+        <br />
+        Already have an account ?{" "}
+        <Button
+          type="primary"
+          htmlType="submit"
+          className="login-form-button"
+          onClick={(e) => navigate("/login")}
+        >
+          LogIn
+        </Button>
       </Card>
     </div>
   );

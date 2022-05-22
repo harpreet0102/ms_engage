@@ -1,11 +1,36 @@
 import React, { useState } from "react";
 import "antd/dist/antd.css";
-import { Form, Input, Button, Checkbox, Card } from "antd";
+import { Form, Input, Button, Checkbox, Card, notification } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-function LoginForm({ setShowLogin }) {
-  const onFinish = (values) => {
+function LoginForm() {
+  const navigate = useNavigate();
+
+  const onFinish = async (values) => {
     console.log("Received values of form: ", values);
+    const { userName, password } = values;
+
+    try {
+      const { data } = await axios.post("http://localhost:4000/login", {
+        userName,
+        password,
+      });
+      // navigate("/dashboard");
+
+      if (data.success) {
+        notification.success({
+          message: "User loggedIn successfully!",
+          style: { height: 75 },
+        });
+        navigate("/dashboard");
+      } else {
+        notification.error("Failed to register user");
+      }
+    } catch (error) {
+      notification.error("Failed to register user");
+    }
   };
   return (
     <div className="site-card-wrapper">
@@ -32,7 +57,7 @@ function LoginForm({ setShowLogin }) {
           style={{ width: 500 }}
         >
           <Form.Item
-            name="username"
+            name="userName"
             rules={[
               {
                 required: true,
@@ -78,19 +103,19 @@ function LoginForm({ setShowLogin }) {
             >
               Log in
             </Button>
-            <br />
-            <br />
-            Not Registered ? &nbsp;{" "}
-            <Button
-              type="primary"
-              htmlType="submit"
-              className="login-form-button"
-              onClick={(e) => setShowLogin(false)}
-            >
-              Register
-            </Button>
           </Form.Item>
         </Form>
+        <br />
+        <br />
+        Not Registered ? &nbsp;{" "}
+        <Button
+          type="primary"
+          htmlType="submit"
+          className="login-form-button"
+          onClick={() => navigate("/register")}
+        >
+          Register
+        </Button>
       </Card>
     </div>
   );
