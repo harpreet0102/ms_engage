@@ -22,6 +22,8 @@ function DetectFace1() {
       faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
       faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
       faceapi.nets.faceExpressionNet.loadFromUri("/models"),
+      faceapi.nets.ageGenderNet.loadFromUri("/models"),
+      faceapi.nets.ssdMobilenetv1.loadFromUri("/models"),
     ]).then(() => {
       if (navigator.mediaDevices.getUserMedia) {
         setVideo(document.getElementById("video"));
@@ -49,35 +51,119 @@ function DetectFace1() {
           });
       }
 
+      const getLabels = async () => {
+        var list = [];
+        var labelList = new Array();
+        const { data } = await axios.get("http://localhost:4000/users", {});
+        data.forEach((user) => {
+          labelList.push(user.userName);
+        });
+        console.log("labellist", labelList);
+
+        return labelList;
+      };
+
+      const loadLabeledImages = async () => {
+        // getLabels().then((data) => {
+        //   dataS = JSON.stringify(data);
+        //   sessionStorage.setItem("list", dataS);
+        // });
+        const labels = await getLabels();
+        // const labels = JSON.parse(sessionStorage.getItem("list"));
+
+        // Error handling for no users registered, hence labels is undefined, null or empty.
+        // Define 'Sheldon' as default labels value.
+        if (labels === undefined || labels === null || labels.length == 0) {
+          window.labels = ["Sheldon"];
+        }
+        console.log("Labels - ", labels); // check that labels cannot be [] or empty at this point.
+
+        return Promise.all(
+          labels.map(async (label) => {
+            var descriptions = [];
+            for (let i = 1; i <= 1; i++) {
+              try {
+                const imageUrl = "labeled_images/" + `${label}/${i}.jpg`;
+                // const img = await canvas.loadImage(
+                //   `labeled_images/${label}/${i}.jpg`
+                // );
+                console.log(
+                  "imageUrl",
+                  "https://raw.githubusercontent.com/harpreet0102/ms_engage/main/frontend/src/labeled_images/hk/1.jpg?token=GHSAT0AAAAAABUXWPCK2MVWZZTBJDXRWGRGYUKQLPQ"
+                );
+                const img = await faceapi.fetchImage(
+                  "https://raw.githubusercontent.com/harpreet0102/ms_engage/main/frontend/src/labeled_images/taran/1.jpg?token=GHSAT0AAAAAABUXWPCKTT2F7ZTWZOTRQY4MYUKVGUA"
+                );
+                console.log("------------------");
+                const detections = await faceapi
+                  .detectSingleFace(img)
+                  .withFaceLandmarks()
+                  .withFaceDescriptor();
+                console.log("detections", detections);
+                descriptions.push(detections.descriptor);
+              } catch (err) {
+                console.log("err here", err);
+                // Do nothing or error handling
+              }
+            }
+            return new faceapi.LabeledFaceDescriptors(label, descriptions);
+          })
+        );
+      };
+
       function addEvent() {
+        console.log("add event called");
         let video = document.getElementById("video");
-        video.addEventListener("play", () => {
-          console.log("addEvent");
-          //const canvas = faceapi.createCanvasFromMedia(video.srcObject);
-          const canvas = faceapi.createCanvas(video);
-          //video.append(canvas);
-          canvas.id = "canvas";
-          document.querySelector("#video").append(canvas);
+        video.addEventListener("play", async () => {
+          const canvas = await faceapi.createCanvasFromMedia(video);
           document.body.append(canvas);
+
           const displaySize = { width: video.width, height: video.height };
           faceapi.matchDimensions(canvas, displaySize);
-          setInterval(async () => {
+
+          const labeledFaceDescriptors = await loadLabeledImages();
+          var faceMatcher = new faceapi.FaceMatcher(
+            labeledFaceDescriptors,
+            0.5
+          );
+
+          console.log("faceMatcher", faceMatcher);
+
+          while (true) {
             const detections = await faceapi
               .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
               .withFaceLandmarks()
-              .withFaceExpressions();
+              .withFaceExpressions()
+              .withAgeAndGender()
+              .withFaceDescriptors();
             const resizedDetections = faceapi.resizeResults(
               detections,
               displaySize
             );
+
             canvas
               .getContext("2d")
               .clearRect(0, 0, canvas.width, canvas.height);
             faceapi.draw.drawDetections(canvas, resizedDetections);
             faceapi.draw.drawFaceLandmarks(canvas, resizedDetections);
             faceapi.draw.drawFaceExpressions(canvas, resizedDetections);
-          }, 100);
-          console.log("Event added");
+
+            const results = resizedDetections.map((d) =>
+              faceMatcher.findBestMatch(d.descriptor)
+            );
+            console.log("results", results, results[0]["_label"]);
+            if (results.length > 0 && results[0]["_label"] != "unknown") {
+              window.alert(results[0]["_label"]);
+              return;
+            }
+            results.forEach((result, i) => {
+              const box = resizedDetections[i].detection.box;
+              const drawBox = new faceapi.draw.DrawBox(box, {
+                label: result.toString(),
+              });
+              drawBox.draw(canvas);
+            });
+          }
         });
       }
 
