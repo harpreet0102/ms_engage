@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
+import DetectFace from "./DetectFace";
 
 const Dashboard = () => {
   const [name, setName] = useState("");
@@ -30,23 +31,23 @@ const Dashboard = () => {
 
   const axiosJWT = axios.create();
 
-  axiosJWT.interceptors.request.use(
-    async (config) => {
-      const currentDate = new Date();
-      if (expire * 1000 < currentDate.getTime()) {
-        const response = await axios.get("http://localhost:4000/token");
-        config.headers.Authorization = `Bearer ${response.data.accessToken}`;
-        setToken(response.data.accessToken);
-        const decoded = jwt_decode(response.data.accessToken);
-        setName(decoded.name);
-        setExpire(decoded.exp);
-      }
-      return config;
-    },
-    (error) => {
-      return Promise.reject(error);
-    }
-  );
+  // axiosJWT.interceptors.request.use(
+  //   async (config) => {
+  //     const currentDate = new Date();
+  //     if (expire * 1000 < currentDate.getTime()) {
+  //       const response = await axios.get("http://localhost:4000/token");
+  //       config.headers.Authorization = `Bearer ${response.data.accessToken}`;
+  //       setToken(response.data.accessToken);
+  //       const decoded = jwt_decode(response.data.accessToken);
+  //       setName(decoded.name);
+  //       setExpire(decoded.exp);
+  //     }
+  //     return config;
+  //   },
+  //   (error) => {
+  //     return Promise.reject(error);
+  //   }
+  // );
 
   const getUsers = async () => {
     const response = await axiosJWT.get("http://localhost:4000/users", {
@@ -57,7 +58,12 @@ const Dashboard = () => {
     setUsers(response.data);
   };
 
-  return <h1>Welcome Back!</h1>;
+  return (
+    <>
+      <h1>Welcome Back!</h1>
+      <DetectFace></DetectFace>
+    </>
+  );
 };
 
 export default Dashboard;

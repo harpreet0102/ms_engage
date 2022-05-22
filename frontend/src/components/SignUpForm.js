@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import "antd/dist/antd.css";
 import { Form, Input, Button, Checkbox, Card, notification } from "antd";
-import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
+import {
+  UserOutlined,
+  LockOutlined,
+  MailOutlined,
+  UploadOutlined,
+} from "@ant-design/icons";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -102,6 +107,22 @@ function SignUpForm() {
               placeholder="Password"
             />
           </Form.Item>
+          <Form.Item
+            name="image"
+            rules={[
+              {
+                required: true,
+                message: "Please upload your Image!",
+              },
+            ]}
+          >
+            <Input
+              prefix={<UploadOutlined className="site-form-item-icon" />}
+              type="file"
+              title="Please Upload your Image"
+              placeholder="Image"
+            />
+          </Form.Item>
           <Form.Item>
             <Form.Item name="remember" valuePropName="checked" noStyle>
               <Checkbox>Remember me</Checkbox>
@@ -122,8 +143,8 @@ function SignUpForm() {
             </Button>
           </Form.Item>
         </Form>
-        <br />
-        <br />
+        {/* <br /> */}
+        {/* <br /> */}
         Already have an account ?{" "}
         <Button
           type="primary"
