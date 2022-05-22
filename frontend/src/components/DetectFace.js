@@ -7,41 +7,67 @@ function DetectFace() {
   const videoRef = useRef(null);
 
   useEffect(() => {
-    getVideo();
+    Promise.all([
+      faceapi.nets.tinyFaceDetector.loadFromUri("../../models"),
+      faceapi.nets.faceLandmark68Net.loadFromUri("../../models"),
+      faceapi.nets.faceRecognitionNet.loadFromUri("../../models"),
+      faceapi.nets.faceExpressionNet.loadFromUri("../../models"),
+      faceapi.nets.ageGenderNet.loadFromUri("../../models"),
+      faceapi.nets.ssdMobilenetv1.loadFromUri("../../models"),
+    ]).then(
+      navigator.mediaDevices
+        .getUserMedia({
+          video: {
+            width: 720,
+            height: 560,
+          },
+        })
+        .then((stream) => {
+          let video = videoRef.current;
+          video.srcObject = stream;
+          video.play();
+        })
+        .catch((err) => {
+          console.error("error:", err);
+        })
+    );
   }, [videoRef]);
 
-  const getVideo = () => {
-    navigator.mediaDevices
-      .getUserMedia({
-        video: {
-          width: 720,
-          height: 560,
-        },
-      })
-      .then((stream) => {
-        let video = videoRef.current;
-        video.srcObject = stream;
-        video.play();
-      })
-      .catch((err) => {
-        console.error("error:", err);
-      });
-  };
+  //   const loadModels = () => {
+  //     console.log("here");
+  //     Promise.all([
+  //       faceapi.nets.tinyFaceDetector.loadFromUri("../models"),
+  //       faceapi.nets.faceLandmark68Net.loadFromUri("../models"),
+  //       faceapi.nets.faceRecognitionNet.loadFromUri("../models"),
+  //       faceapi.nets.faceExpressionNet.loadFromUri("../models"),
+  //       faceapi.nets.ageGenderNet.loadFromUri("../models"),
+  //       faceapi.nets.ssdMobilenetv1.loadFromUri("../models"),
+  //     ]).then(getVideo);
+  //   };
+
+  //   const getVideo = () => {
+  //     navigator.mediaDevices
+  //       .getUserMedia({
+  //         video: {
+  //           width: 720,
+  //           height: 560,
+  //         },
+  //       })
+  //       .then((stream) => {
+  //         let video = videoRef.current;
+  //         video.srcObject = stream;
+  //         video.play();
+  //       })
+  //       .catch((err) => {
+  //         console.error("error:", err);
+  //       });
+  //   };
 
   //   function timedRefresh(timeoutPeriod) {
   //     setTimeout("refreshLabels();", timeoutPeriod);
   //   }
 
   //   window.onload = timedRefresh(30000);
-
-  //   Promise.all([
-  //     faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
-  //     faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
-  //     faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
-  //     faceapi.nets.faceExpressionNet.loadFromUri("/models"),
-  //     faceapi.nets.ageGenderNet.loadFromUri("/models"),
-  //     faceapi.nets.ssdMobilenetv1.loadFromUri("/models"),
-  //   ]).then(startVideo);
 
   const loadLabeledImages = async () => {
     // getLabels().then((data) => {
@@ -58,26 +84,23 @@ function DetectFace() {
     }
     console.log("Labels - ", labels); // check that labels cannot be [] or empty at this point.
 
-    const { Canvas, Image, ImageData } = canvas;
-    faceapi.env.monkeyPatch({ Canvas, Image });
     return Promise.all(
       labels.map(async (label) => {
         var descriptions = [];
         for (let i = 1; i <= 1; i++) {
           try {
-            console.log(
-              "../labeled_images/${label}/${i}.jpg",
-              `../labeled_images/${label}/${i}.jpg`
-            );
             const imageUrl = "labeled_images/" + `${label}/${i}.jpg`;
-            const img = await canvas.loadImage(
-              `labeled_images/${label}/${i}.jpg`
-            );
-            console.log("imageUrl", imageUrl);
-            // const img2 = await faceapi.fetchImage(
+            // const img = await canvas.loadImage(
             //   `labeled_images/${label}/${i}.jpg`
             // );
-
+            console.log(
+              "imageUrl",
+              "https://raw.githubusercontent.com/harpreet0102/ms_engage/main/frontend/src/labeled_images/hk/1.jpg?token=GHSAT0AAAAAABUXWPCK2MVWZZTBJDXRWGRGYUKQLPQ"
+            );
+            const img = await faceapi.fetchImage(
+              "https://raw.githubusercontent.com/harpreet0102/ms_engage/main/frontend/src/labeled_images/hk/1.jpg?token=GHSAT0AAAAAABUXWPCK2MVWZZTBJDXRWGRGYUKQLPQ"
+            );
+            console.log("------------------");
             const detections = await faceapi
               .detectSingleFace(img)
               .withFaceLandmarks()
