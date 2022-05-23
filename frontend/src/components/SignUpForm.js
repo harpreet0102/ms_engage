@@ -14,13 +14,20 @@ function SignUpForm() {
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
-    const { userName, email, password } = values;
+    console.log("values", values);
+    const { userName, email, password, image } = values;
     try {
-      const { data } = await axios.post("http://localhost:4000/users", {
-        userName,
-        email,
-        password,
-      });
+      const formData = new FormData();
+      formData.append("userName", userName);
+      formData.append("email", email);
+      formData.append("password", password);
+      formData.append("file", selectedFile);
+
+      const { data } = await axios.post(
+        "http://localhost:4000/users",
+        formData
+      );
+      console.log("data ", data);
       if (data.success) {
         notification.success({
           message: "User registered successfully!",
@@ -33,6 +40,11 @@ function SignUpForm() {
     } catch (error) {
       notification.error("Failed to register user");
     }
+  };
+
+  const [selectedFile, setSelectedFile] = useState(null);
+  const onChangeHandler = (event) => {
+    setSelectedFile(event.target.files[0]);
   };
   return (
     <div className="site-card-wrapper">
@@ -108,7 +120,7 @@ function SignUpForm() {
             />
           </Form.Item>
           <Form.Item
-            name="image"
+            name="file"
             rules={[
               {
                 // required: true,
@@ -119,6 +131,7 @@ function SignUpForm() {
             <Input
               prefix={<UploadOutlined className="site-form-item-icon" />}
               type="file"
+              onChange={onChangeHandler}
               title="Please Upload your Image"
               placeholder="Image"
             />

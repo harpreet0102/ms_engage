@@ -14,6 +14,7 @@ export const getUsers = async (req, res) => {
 
 export const Register = async (req, res) => {
   console.log("req.body", req.body);
+  console.log("File name ", req.file.filename);
   const { userName, email, password } = req.body;
   const salt = await bcrypt.genSalt();
   const hashPassword = await bcrypt.hash(password, salt);
