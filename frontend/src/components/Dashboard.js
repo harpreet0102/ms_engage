@@ -4,6 +4,7 @@ import jwt_decode from "jwt-decode";
 import axios from "axios";
 import DetectFace from "./DetectFace";
 import DetectFace2 from "./DetectFace2";
+import Posts from "./Posts";
 
 const Dashboard = () => {
   const [name, setName] = useState("");
@@ -62,7 +63,8 @@ const Dashboard = () => {
   return (
     <>
       <h1>Welcome Back!</h1>
-      <DetectFace2></DetectFace2>
+      {/* <DetectFace2></DetectFace2> */}
+      <Posts></Posts>
     </>
   );
 };

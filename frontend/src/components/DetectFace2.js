@@ -5,7 +5,7 @@ import WebCam from "react-webcam";
 
 import axios from "axios";
 
-function DetectFace2() {
+function DetectFace2({ setFaceRecognised }) {
   const [modelsLoaded, setModelsLoaded] = React.useState(false);
   const [captureVideo, setCaptureVideo] = React.useState(false);
 
@@ -159,6 +159,7 @@ function DetectFace2() {
         console.log("results", results);
         if (results.length > 0 && results[0]["_label"] != "unknown") {
           window.alert(results[0]["_label"]);
+          setFaceRecognised(true);
           return;
         }
       }
@@ -179,10 +180,10 @@ function DetectFace2() {
             onClick={closeWebcam}
             style={{
               cursor: "pointer",
-              backgroundColor: "green",
+              backgroundColor: "#1890ff",
               color: "white",
-              padding: "15px",
-              fontSize: "25px",
+              padding: "10px",
+              fontSize: "20px",
               border: "none",
               borderRadius: "10px",
             }}
@@ -194,10 +195,10 @@ function DetectFace2() {
             onClick={startVideo}
             style={{
               cursor: "pointer",
-              backgroundColor: "green",
+              backgroundColor: "#1890ff",
               color: "white",
-              padding: "15px",
-              fontSize: "25px",
+              padding: "10px",
+              fontSize: "20px",
               border: "none",
               borderRadius: "10px",
             }}
