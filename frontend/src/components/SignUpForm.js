@@ -111,7 +111,7 @@ function SignUpForm() {
             name="image"
             rules={[
               {
-                required: true,
+                // required: true,
                 message: "Please upload your Image!",
               },
             ]}

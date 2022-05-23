@@ -82,10 +82,10 @@ function DetectFace2() {
             // );
             console.log(
               "imageUrl",
-              "https://raw.githubusercontent.com/harpreet0102/ms_engage/main/frontend/src/labeled_images/hk/1.jpg?token=GHSAT0AAAAAABUXWPCK2MVWZZTBJDXRWGRGYUKQLPQ"
+              "https://raw.githubusercontent.com/harpreet0102/ms_engage/main/frontend/src/labeled_images/taran/1.jpg?token=GHSAT0AAAAAABUXWPCKUWMGLXZ342F7IRPCYULFM4A"
             );
             const img = await faceapi.fetchImage(
-              "https://raw.githubusercontent.com/harpreet0102/ms_engage/main/frontend/src/labeled_images/taran/1.jpg?token=GHSAT0AAAAAABUXWPCLAKGDHIR2J2NPOZDIYUKXWCQ"
+              `/labeled_images/${label}/${i}.jpg`
             );
             console.log("------------------");
             const detections = await faceapi
