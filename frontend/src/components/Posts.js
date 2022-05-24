@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Avatar, Card, Col, Row } from "antd";
+import { Avatar, Card, Col, message, Row } from "antd";
 import AddPosts from "./AddPost";
 const { Meta } = Card;
 
@@ -9,13 +9,19 @@ function Posts() {
 
   const fetchPost = async () => {
     try {
-      const { data } = await axios.get("http://localhost:4000/posts");
+      const token = localStorage.getItem("token") || "";
+      console.log("token", token);
+      const headers = {
+        authorization: `Bearer ${token}`,
+      };
+      const { data } = await axios.get("http://localhost:4000/posts", {
+        headers,
+      });
       console.log("data", data);
       setData(data);
     } catch (error) {
-      if (error.response) {
-        // history.push("/");
-      }
+      console.log("Error - ", error);
+      message.error("Please login to continue");
     }
   };
   useEffect(() => {

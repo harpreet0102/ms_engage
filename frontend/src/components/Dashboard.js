@@ -13,7 +13,7 @@ const Dashboard = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    refreshToken();
+    // refreshToken();
     getUsers();
   }, []);
 
@@ -52,6 +52,9 @@ const Dashboard = () => {
   // );
 
   const getUsers = async () => {
+    const token = localStorage.getItem("token") || "";
+    console.log("token", token);
+
     const response = await axiosJWT.get("http://localhost:4000/users", {
       headers: {
         Authorization: `Bearer ${token}`,

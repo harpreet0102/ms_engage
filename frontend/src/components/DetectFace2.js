@@ -5,7 +5,7 @@ import WebCam from "react-webcam";
 
 import axios from "axios";
 
-function DetectFace2({ setFaceRecognised }) {
+function DetectFace2({ detectSignedInUser, setFaceRecognised }) {
   const [modelsLoaded, setModelsLoaded] = React.useState(false);
   const [captureVideo, setCaptureVideo] = React.useState(false);
 
@@ -47,7 +47,20 @@ function DetectFace2({ setFaceRecognised }) {
   const getLabels = async () => {
     var list = [];
     var labelList = new Array();
-    const { data } = await axios.get("http://localhost:4000/users", {});
+    const token = localStorage.getItem("token") || "";
+    console.log("token", token);
+    const headers = {
+      authorization: `Bearer ${token}`,
+    };
+    let url = "";
+    if (detectSignedInUser) {
+      url = "http://localhost:4000/user";
+    } else {
+      url = "http://localhost:4000/users";
+    }
+    const { data } = await axios.get(url, {
+      headers,
+    });
     data.forEach((user) => {
       labelList.push(user.userName);
     });

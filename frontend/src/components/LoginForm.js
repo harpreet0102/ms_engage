@@ -19,7 +19,10 @@ function LoginForm() {
       });
       // navigate("/dashboard");
 
+      console.log("data", data);
+
       if (data.success) {
+        localStorage.setItem("token", data.accessToken);
         notification.success({
           message: "User loggedIn successfully!",
           style: { height: 75 },

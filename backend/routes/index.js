@@ -1,6 +1,13 @@
 import express from "express";
 // import { getUsers, Register, Login, Logout } from "../controllers/Users.js";
-import { Register, Login, getUsers, viewPosts } from "../controllers/Users.js";
+import {
+  Register,
+  Login,
+  getUsers,
+  viewPosts,
+  addPosts,
+  getUser,
+} from "../controllers/Users.js";
 
 import { verifyToken } from "../middleware/VerifyToken.js";
 import { refreshToken } from "../controllers/RefreshToken.js";
@@ -46,11 +53,15 @@ const upload = multer({
   //   },
 });
 
-router.get("/users", getUsers);
+router.get("/users", verifyToken, getUsers);
+router.get("/user", verifyToken, getUser);
+
 router.post("/users", upload.single("file"), Register);
 router.post("/login", Login);
-router.get("/token", refreshToken);
-router.get("/posts", viewPosts);
+// router.get("/token", refreshToken);
+router.get("/posts", verifyToken, viewPosts);
+router.post("/posts", verifyToken, addPosts);
+
 // router.delete('/logout', Logout);
 
 export default router;

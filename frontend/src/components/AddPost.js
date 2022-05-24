@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Avatar, Button, Form, Input, Card, Col, Modal, Row } from "antd";
+import {
+  Avatar,
+  Button,
+  Form,
+  Input,
+  Card,
+  Col,
+  Modal,
+  Row,
+  notification,
+} from "antd";
 import DetectFace2 from "./DetectFace2";
 const { Meta } = Card;
 
@@ -12,30 +22,39 @@ function AddPosts() {
 
   const onFinish = async (values) => {
     console.log("Received values of form: ", values);
-    // const { userName, password } = values;
+    const { description } = values;
 
-    // try {
-    //   const { data } = await axios.post("http://localhost:4000/login", {
-    //     userName,
-    //     password,
-    //   });
-    //   // navigate("/dashboard");
+    const token = localStorage.getItem("token") || "";
+    console.log("token", token);
+    const headers = {
+      authorization: `Bearer ${token}`,
+    };
 
-    //   if (data.success) {
-    //     notification.success({
-    //       message: "User loggedIn successfully!",
-    //       style: { height: 75 },
-    //     });
-    //     navigate("/dashboard");
-    //   } else {
-    //     notification.error("Failed to register user");
-    //   }
-    // } catch (error) {
-    //   notification.error("Failed to register user");
-    // }
+    try {
+      const { data } = await axios.post(
+        "http://localhost:4000/posts",
+        { description },
+        {
+          headers,
+        }
+      );
+      // navigate("/dashboard");
+
+      if (data.success) {
+        notification.success({
+          message: "User loggedIn successfully!",
+          style: { height: 75 },
+        });
+      } else {
+        notification.error("Failed to register user");
+      }
+    } catch (error) {
+      notification.error("Failed to register user");
+    }
   };
 
   const handleOk = () => {
+    onFinish();
     setOpenModal(false);
   };
 
@@ -54,7 +73,7 @@ function AddPosts() {
             width={800}
             visible={true}
             title="Add post"
-            onOk={handleOk}
+            // onOk={handleOk}
             onCancel={handleCancel}
           >
             {faceRecognised ? (
@@ -79,10 +98,23 @@ function AddPosts() {
                   >
                     <Input placeholder="Username" />
                   </Form.Item>
+
+                  <Form.Item>
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      className="login-form-button"
+                    >
+                      SignUp
+                    </Button>
+                  </Form.Item>
                 </Form>
               </>
             ) : (
-              <DetectFace2 setFaceRecognised={setFaceRecognised}></DetectFace2>
+              <DetectFace2
+                detectSignedInUser={true}
+                setFaceRecognised={setFaceRecognised}
+              ></DetectFace2>
             )}
           </Modal>
         </>
