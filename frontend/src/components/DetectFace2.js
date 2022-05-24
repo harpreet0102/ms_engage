@@ -133,7 +133,7 @@ function DetectFace2({ detectSignedInUser, setFaceRecognised }) {
       setTimeout(() => (stopDetection = true), 60000);
     }
 
-    while (true) {
+    setInterval(async () => {
       if (canvasRef && canvasRef.current) {
         canvasRef.current.innerHTML = faceapi.createCanvasFromMedia(
           videoRef.current
@@ -194,7 +194,7 @@ function DetectFace2({ detectSignedInUser, setFaceRecognised }) {
           });
           setFaceRecognised(true);
           closeWebcam();
-          break;
+          return;
         }
 
         if (stopDetection) {
@@ -202,10 +202,10 @@ function DetectFace2({ detectSignedInUser, setFaceRecognised }) {
             message: "Failed to match the face!",
           });
           closeWebcam();
-          break;
+          return;
         }
       }
-    }
+    }, 1000);
 
     // setInterval(async () => {
     //   if (canvasRef && canvasRef.current) {
