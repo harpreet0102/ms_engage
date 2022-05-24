@@ -64,7 +64,13 @@ function AddPosts() {
 
   return (
     <>
-      <Button type="primary" onClick={() => setOpenModal(true)}>
+      <Button
+        type="danger"
+        // style={{
+        //   color: "red",
+        // }}
+        onClick={() => setOpenModal(true)}
+      >
         Add Post
       </Button>
       {openModal ? (

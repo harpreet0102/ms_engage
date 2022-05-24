@@ -43,7 +43,7 @@ function LoginForm() {
           width: 600,
           marginLeft: 525,
           marginRight: 350,
-          marginTop: 70,
+          marginTop: 80,
           marginBottom: 200,
           height: 450,
           borderRadius: 20,

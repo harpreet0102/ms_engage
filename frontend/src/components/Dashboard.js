@@ -7,67 +7,40 @@ import DetectFace2 from "./DetectFace2";
 import Posts from "./Posts";
 
 const Dashboard = () => {
-  const [name, setName] = useState("");
-  const [token, setToken] = useState("");
-  const [expire, setExpire] = useState("");
-  const [users, setUsers] = useState([]);
+  const [user, setUser] = useState({});
+  const [faceRecognised, setFaceRecognised] = useState(false);
 
   useEffect(() => {
-    // refreshToken();
-    getUsers();
+    getUser();
   }, []);
 
-  const refreshToken = async () => {
-    try {
-      const response = await axios.get("http://localhost:4000/token");
-      setToken(response.data.accessToken);
-      const decoded = jwt_decode(response.data.accessToken);
-      setName(decoded.name);
-      setExpire(decoded.exp);
-    } catch (error) {
-      if (error.response) {
-        // history.push("/");
-      }
-    }
-  };
-
-  const axiosJWT = axios.create();
-
-  // axiosJWT.interceptors.request.use(
-  //   async (config) => {
-  //     const currentDate = new Date();
-  //     if (expire * 1000 < currentDate.getTime()) {
-  //       const response = await axios.get("http://localhost:4000/token");
-  //       config.headers.Authorization = `Bearer ${response.data.accessToken}`;
-  //       setToken(response.data.accessToken);
-  //       const decoded = jwt_decode(response.data.accessToken);
-  //       setName(decoded.name);
-  //       setExpire(decoded.exp);
-  //     }
-  //     return config;
-  //   },
-  //   (error) => {
-  //     return Promise.reject(error);
-  //   }
-  // );
-
-  const getUsers = async () => {
+  const getUser = async () => {
     const token = localStorage.getItem("token") || "";
     console.log("token", token);
-
-    const response = await axiosJWT.get("http://localhost:4000/users", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+    const headers = {
+      authorization: `Bearer ${token}`,
+    };
+    const url = "http://localhost:4000/user";
+    const { data } = await axios.get(url, {
+      headers,
     });
-    setUsers(response.data);
+
+    console.log("-", data);
+
+    setUser(data[0]);
   };
 
   return (
     <>
       <div className="site-card-wrapper">
-        {/* <h1>Welcome Back!</h1> */}
-        {/* <DetectFace2></DetectFace2> */}
+        {user && user.role == "ADMIN" ? (
+          <>
+            <DetectFace2
+              detectSignedInUser={false}
+              setFaceRecognised={setFaceRecognised}
+            ></DetectFace2>
+          </>
+        ) : null}
         <Posts></Posts>
       </div>
     </>

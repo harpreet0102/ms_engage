@@ -27,7 +27,11 @@ export const getUser = async (req, res) => {
 
 export const viewPosts = async (req, res) => {
   try {
-    const posts = await query(`SELECT * FROM posts`);
+    const posts = await query(`
+    SELECT p.*,u.*
+    FROM posts p
+    JOIN users u on p.createdBy = u.userId
+    `);
     res.json(posts);
   } catch (error) {
     console.log(error);

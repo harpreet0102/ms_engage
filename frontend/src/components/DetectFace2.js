@@ -4,11 +4,12 @@ import * as canvas from "canvas";
 import WebCam from "react-webcam";
 
 import axios from "axios";
-import { message } from "antd";
+import { message, notification } from "antd";
 
 function DetectFace2({ detectSignedInUser, setFaceRecognised }) {
-  const [modelsLoaded, setModelsLoaded] = React.useState(false);
-  const [captureVideo, setCaptureVideo] = React.useState(false);
+  const [modelsLoaded, setModelsLoaded] = useState(false);
+  const [captureVideo, setCaptureVideo] = useState(false);
+  const [userDetail, setUserDetail] = useState({});
 
   const videoRef = React.useRef();
   const videoHeight = 480;
@@ -62,10 +63,14 @@ function DetectFace2({ detectSignedInUser, setFaceRecognised }) {
     const { data } = await axios.get(url, {
       headers,
     });
+    // let userDetail = {};
     data.forEach((user) => {
       labelList.push(user.userName);
+      userDetail[user.userName] = user;
     });
-    console.log("labellist", labelList);
+    console.log("labellist", labelList, userDetail);
+    setUserDetail(userDetail);
+    console.log("userDetail", userDetail);
 
     return labelList;
   };
@@ -178,14 +183,24 @@ function DetectFace2({ detectSignedInUser, setFaceRecognised }) {
         );
         console.log("results", results, stopDetection);
         if (results.length > 0 && results[0]["_label"] != "unknown") {
-          window.alert(results[0]["_label"]);
+          // window.alert(results[0]["_label"]);
+          console.log(userDetail);
+          notification.success({
+            message: "Face recognised successfully!",
+            description: `UserName - ${results[0]["_label"]} and  
+            Email -
+             ${userDetail[results[0]["_label"]].email}
+            `,
+          });
           setFaceRecognised(true);
           closeWebcam();
           break;
         }
 
         if (stopDetection) {
-          message.warning("Sorry, you can't post!");
+          notification.error({
+            message: "Failed to match the face!",
+          });
           closeWebcam();
           break;
         }
@@ -312,7 +327,7 @@ function DetectFace2({ detectSignedInUser, setFaceRecognised }) {
             </div>
           </div>
         ) : (
-          <div>loading...</div>
+          <>{message.info("Loading!")}</>
         )
       ) : (
         <></>

@@ -51,7 +51,7 @@ function Posts() {
               >
                 <Meta
                   avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-                  title="Post"
+                  title={post.userName}
                   description={post.description}
                 />
               </Card>
