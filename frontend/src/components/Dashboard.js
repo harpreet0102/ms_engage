@@ -65,9 +65,11 @@ const Dashboard = () => {
 
   return (
     <>
-      <h1>Welcome Back!</h1>
-      {/* <DetectFace2></DetectFace2> */}
-      <Posts></Posts>
+      <div className="site-card-wrapper">
+        {/* <h1>Welcome Back!</h1> */}
+        {/* <DetectFace2></DetectFace2> */}
+        <Posts></Posts>
+      </div>
     </>
   );
 };

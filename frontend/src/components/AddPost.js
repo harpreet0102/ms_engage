@@ -42,14 +42,14 @@ function AddPosts() {
 
       if (data.success) {
         notification.success({
-          message: "User loggedIn successfully!",
+          message: "Post added successfully!",
           style: { height: 75 },
         });
       } else {
-        notification.error("Failed to register user");
+        notification.error("Failed to add post");
       }
     } catch (error) {
-      notification.error("Failed to register user");
+      notification.error("Failed to add post");
     }
   };
 
@@ -105,7 +105,7 @@ function AddPosts() {
                       htmlType="submit"
                       className="login-form-button"
                     >
-                      SignUp
+                      Add Post
                     </Button>
                   </Form.Item>
                 </Form>

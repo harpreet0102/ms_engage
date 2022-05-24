@@ -4,6 +4,7 @@ import * as canvas from "canvas";
 import WebCam from "react-webcam";
 
 import axios from "axios";
+import { message } from "antd";
 
 function DetectFace2({ detectSignedInUser, setFaceRecognised }) {
   const [modelsLoaded, setModelsLoaded] = React.useState(false);
@@ -121,7 +122,13 @@ function DetectFace2({ detectSignedInUser, setFaceRecognised }) {
     const labeledFaceDescriptors = await loadLabeledImages();
     var faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.5);
 
-    setInterval(async () => {
+    var stopDetection = false;
+
+    if (detectSignedInUser) {
+      setTimeout(() => (stopDetection = true), 60000);
+    }
+
+    while (true) {
       if (canvasRef && canvasRef.current) {
         canvasRef.current.innerHTML = faceapi.createCanvasFromMedia(
           videoRef.current
@@ -169,14 +176,78 @@ function DetectFace2({ detectSignedInUser, setFaceRecognised }) {
         const results = resizedDetections.map((d) =>
           faceMatcher.findBestMatch(d.descriptor)
         );
-        console.log("results", results);
+        console.log("results", results, stopDetection);
         if (results.length > 0 && results[0]["_label"] != "unknown") {
           window.alert(results[0]["_label"]);
           setFaceRecognised(true);
-          return;
+          closeWebcam();
+          break;
+        }
+
+        if (stopDetection) {
+          message.warning("Sorry, you can't post!");
+          closeWebcam();
+          break;
         }
       }
-    }, 100);
+    }
+
+    // setInterval(async () => {
+    //   if (canvasRef && canvasRef.current) {
+    //     canvasRef.current.innerHTML = faceapi.createCanvasFromMedia(
+    //       videoRef.current
+    //     );
+    //     const displaySize = {
+    //       width: videoWidth,
+    //       height: videoHeight,
+    //     };
+
+    //     faceapi.matchDimensions(canvasRef.current, displaySize);
+
+    //     const detections = await faceapi
+    //       .detectAllFaces(
+    //         videoRef.current,
+    //         new faceapi.TinyFaceDetectorOptions()
+    //       )
+    //       .withFaceLandmarks()
+    //       .withFaceExpressions()
+    //       .withAgeAndGender()
+    //       .withFaceDescriptors();
+
+    //     const resizedDetections = faceapi.resizeResults(
+    //       detections,
+    //       displaySize
+    //     );
+
+    //     canvasRef &&
+    //       canvasRef.current &&
+    //       canvasRef.current
+    //         .getContext("2d")
+    //         .clearRect(0, 0, videoWidth, videoHeight);
+    //     canvasRef &&
+    //       canvasRef.current &&
+    //       faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
+    //     canvasRef &&
+    //       canvasRef.current &&
+    //       faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
+    //     canvasRef &&
+    //       canvasRef.current &&
+    //       faceapi.draw.drawFaceExpressions(
+    //         canvasRef.current,
+    //         resizedDetections
+    //       );
+
+    //     const results = resizedDetections.map((d) =>
+    //       faceMatcher.findBestMatch(d.descriptor)
+    //     );
+    //     console.log("results", results);
+    //     if (results.length > 0 && results[0]["_label"] != "unknown") {
+    //       window.alert(results[0]["_label"]);
+    //       setFaceRecognised(true);
+    //       return;
+    //     }
+    //   }
+    // }, 100);
   };
 
   const closeWebcam = () => {

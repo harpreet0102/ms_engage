@@ -52,11 +52,11 @@ function SignUpForm() {
         hoverable
         style={{
           width: 600,
-          marginLeft: 550,
+          marginLeft: 525,
           marginRight: 350,
-          marginTop: 125,
+          marginTop: 75,
           marginBottom: 200,
-          height: 480,
+          height: 490,
           borderRadius: 20,
         }}
         title="SignUp!"
