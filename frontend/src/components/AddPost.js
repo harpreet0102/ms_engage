@@ -32,14 +32,9 @@ function AddPosts() {
       authorization: `Bearer ${token}`,
     };
 
-    console.log(
-      "`${process.env.REACT_APP_BACKEND_URL}/posts`",
-      `${process.env.REACT_APP_BACKEND_URL}/posts`
-    );
-
     try {
       const { data } = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/posts`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/posts`,
         { description },
         {
           headers,

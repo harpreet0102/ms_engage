@@ -22,7 +22,7 @@ const Dashboard = () => {
     const headers = {
       authorization: `Bearer ${token}`,
     };
-    const url = `${process.env.REACT_APP_BACKEND_URL}/user`;
+    const url = `${process.env.REACT_APP_BACKEND_URL}/api/user`;
     const { data } = await axios.get(url, {
       headers,
     });

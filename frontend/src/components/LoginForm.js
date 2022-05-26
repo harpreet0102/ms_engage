@@ -16,7 +16,7 @@ function LoginForm() {
 
     try {
       const { data } = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/login`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/login`,
         {
           userName,
           password,

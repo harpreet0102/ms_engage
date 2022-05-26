@@ -13,16 +13,12 @@ function Posts() {
     try {
       const token = localStorage.getItem("token") || "";
       console.log("token", token);
-      console.log(
-        "`${process.env.REACT_APP_BACKEND_URL}/posts`",
-        `${process.env.REACT_APP_BACKEND_URL}/posts`
-      );
 
       const headers = {
         authorization: `Bearer ${token}`,
       };
       const { data } = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/posts`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/posts`,
         {
           headers,
         }
