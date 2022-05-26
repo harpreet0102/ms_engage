@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import dotenv from "dotenv";
+
 import { Avatar, Card, Col, message, Row } from "antd";
 import AddPosts from "./AddPost";
 const { Meta } = Card;
@@ -11,6 +13,11 @@ function Posts() {
     try {
       const token = localStorage.getItem("token") || "";
       console.log("token", token);
+      console.log(
+        "`${process.env.REACT_APP_BACKEND_URL}/posts`",
+        `${process.env.REACT_APP_BACKEND_URL}/posts`
+      );
+
       const headers = {
         authorization: `Bearer ${token}`,
       };

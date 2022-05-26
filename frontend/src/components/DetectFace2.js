@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as faceapi from "face-api.js";
+import dotenv from "dotenv";
+
 import * as canvas from "canvas";
 import WebCam from "react-webcam";
 

@@ -1,5 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
+import dotenv from "dotenv";
+
 import jwt_decode from "jwt-decode";
 import axios from "axios";
 import DetectFace from "./DetectFace";

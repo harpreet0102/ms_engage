@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import dotenv from "dotenv";
+
 import {
   Avatar,
   Button,
@@ -29,6 +31,11 @@ function AddPosts() {
     const headers = {
       authorization: `Bearer ${token}`,
     };
+
+    console.log(
+      "`${process.env.REACT_APP_BACKEND_URL}/posts`",
+      `${process.env.REACT_APP_BACKEND_URL}/posts`
+    );
 
     try {
       const { data } = await axios.post(
