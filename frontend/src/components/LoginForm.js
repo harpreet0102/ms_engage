@@ -108,6 +108,12 @@ function LoginForm() {
               type="primary"
               htmlType="submit"
               className="login-form-button"
+              style={{
+                borderRadius: 5,
+                //   background: "white",
+                //   color: "olive",
+                // borderColor: "black",
+              }}
             >
               Log in
             </Button>
@@ -120,6 +126,9 @@ function LoginForm() {
           type="primary"
           htmlType="submit"
           className="login-form-button"
+          style={{
+            borderRadius: 5,
+          }}
           onClick={() => navigate("/register")}
         >
           Register

@@ -4,7 +4,6 @@ import dotenv from "dotenv";
 
 import jwt_decode from "jwt-decode";
 import axios from "axios";
-import DetectFace from "./DetectFace";
 import DetectFace2 from "./DetectFace2";
 import Posts from "./Posts";
 

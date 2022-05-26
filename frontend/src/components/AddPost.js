@@ -67,10 +67,11 @@ function AddPosts() {
   return (
     <>
       <Button
-        type="danger"
-        // style={{
-        //   color: "red",
-        // }}
+        type="ghost"
+        style={{
+          backgroundColor: "olive",
+          borderColor: "black",
+        }}
         onClick={() => setOpenModal(true)}
       >
         Add Post
