@@ -91,7 +91,7 @@ function AddPosts() {
             {recognisedFaceDetail.faceRecognised ? (
               <>
                 <img
-                  src={`build/labeled_images/${recognisedFaceDetail.recognisedUserName}/1.jpg`}
+                  src={`/labeled_images/${recognisedFaceDetail.recognisedUserName}/1.jpg`}
                   style={{ height: 300, width: 300, marginLeft: 200 }}
                 ></img>
                 <br />
