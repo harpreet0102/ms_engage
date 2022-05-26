@@ -20,7 +20,11 @@ function AddPosts() {
   const [description, setDescription] = useState("");
   const [openWebCam, setOpenWebcam] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-  const [faceRecognised, setFaceRecognised] = useState(false);
+  const [recognisedFaceDetail, setRecognisedFaceDetail] = useState({
+    faceRecognised: false,
+    recognisedUserName: "",
+  });
+  // const [userDetail]
 
   const onFinish = async (values) => {
     console.log("Received values of form: ", values);
@@ -67,10 +71,9 @@ function AddPosts() {
   return (
     <>
       <Button
-        type="ghost"
+        type="primary"
         style={{
-          backgroundColor: "olive",
-          borderColor: "black",
+          borderRadius: 7,
         }}
         onClick={() => setOpenModal(true)}
       >
@@ -85,8 +88,15 @@ function AddPosts() {
             // onOk={handleOk}
             onCancel={handleCancel}
           >
-            {faceRecognised ? (
+            {recognisedFaceDetail.faceRecognised ? (
               <>
+                <img
+                  src={`build/labeled_images/${recognisedFaceDetail.recognisedUserName}/1.jpg`}
+                  style={{ height: 300, width: 300, marginLeft: 200 }}
+                ></img>
+                <br />
+                <br />
+                <br />
                 <Form
                   name="normal_login"
                   className="login-form"
@@ -122,7 +132,7 @@ function AddPosts() {
             ) : (
               <DetectFace2
                 detectSignedInUser={true}
-                setFaceRecognised={setFaceRecognised}
+                setRecognisedFaceDetail={setRecognisedFaceDetail}
               ></DetectFace2>
             )}
           </Modal>

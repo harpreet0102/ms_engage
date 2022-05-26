@@ -4,14 +4,17 @@ import dotenv from "dotenv";
 
 import * as canvas from "canvas";
 import WebCam from "react-webcam";
+import { LoadingOutlined } from "@ant-design/icons";
 
 import axios from "axios";
-import { message, notification } from "antd";
+import { message, notification, Spin } from "antd";
+import Countdown from "antd/lib/statistic/Countdown";
 
-function DetectFace2({ detectSignedInUser, setFaceRecognised }) {
+function DetectFace2({ detectSignedInUser, setRecognisedFaceDetail }) {
   const [modelsLoaded, setModelsLoaded] = useState(false);
   const [captureVideo, setCaptureVideo] = useState(false);
   const [userDetail, setUserDetail] = useState({});
+  const [timeCount, setTimeCount] = useState(30);
 
   const videoRef = React.useRef();
   const videoHeight = 480;
@@ -132,8 +135,10 @@ function DetectFace2({ detectSignedInUser, setFaceRecognised }) {
     var stopDetection = false;
 
     if (detectSignedInUser) {
-      setTimeout(() => (stopDetection = true), 60000);
+      setTimeout(() => (stopDetection = true), 30000);
     }
+
+    // setInterval(() => setTimeCount(timeCount - 1), 1000);
 
     setInterval(async () => {
       if (canvasRef && canvasRef.current) {
@@ -194,7 +199,11 @@ function DetectFace2({ detectSignedInUser, setFaceRecognised }) {
              ${userDetail[results[0]["_label"]].email}
             `,
           });
-          setFaceRecognised(true);
+          setRecognisedFaceDetail({
+            faceRecognised: true,
+            recognisedUserName: `${results[0]["_label"]}`,
+          });
+
           closeWebcam();
           return;
         }
@@ -273,8 +282,24 @@ function DetectFace2({ detectSignedInUser, setFaceRecognised }) {
     setCaptureVideo(false);
   };
 
+  console.log("captureVideo", captureVideo);
+
   return (
     <div>
+      {captureVideo ? (
+        <>
+          <Spin
+            style={{
+              fontSize: 20,
+              textAlign: "center",
+              marginLeft: 90,
+              marginBottom: 30,
+            }}
+            tip={`Please wait for 30 seconds. Your face is being recognised`}
+            indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />}
+          />
+        </>
+      ) : null}
       <div style={{ textAlign: "center", padding: "10px" }}>
         {captureVideo && modelsLoaded ? (
           <button
