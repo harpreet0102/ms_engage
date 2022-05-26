@@ -56,9 +56,9 @@ function DetectFace2({ detectSignedInUser, setFaceRecognised }) {
     };
     let url = "";
     if (detectSignedInUser) {
-      url = "http://localhost:4000/user";
+      url = `${process.env.REACT_APP_BACKEND_URL}/user`;
     } else {
-      url = "http://localhost:4000/users";
+      url = `${process.env.REACT_APP_BACKEND_URL}/users`;
     }
     const { data } = await axios.get(url, {
       headers,

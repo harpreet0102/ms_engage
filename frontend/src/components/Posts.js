@@ -14,9 +14,12 @@ function Posts() {
       const headers = {
         authorization: `Bearer ${token}`,
       };
-      const { data } = await axios.get("http://localhost:4000/posts", {
-        headers,
-      });
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}/posts`,
+        {
+          headers,
+        }
+      );
       console.log("data", data);
       setData(data);
     } catch (error) {

@@ -32,7 +32,7 @@ function AddPosts() {
 
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/posts",
+        `${process.env.REACT_APP_BACKEND_URL}/posts`,
         { description },
         {
           headers,

@@ -13,10 +13,13 @@ function LoginForm() {
     const { userName, password } = values;
 
     try {
-      const { data } = await axios.post("http://localhost:4000/login", {
-        userName,
-        password,
-      });
+      const { data } = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}/login`,
+        {
+          userName,
+          password,
+        }
+      );
       // navigate("/dashboard");
 
       console.log("data", data);

@@ -20,7 +20,7 @@ const Dashboard = () => {
     const headers = {
       authorization: `Bearer ${token}`,
     };
-    const url = "http://localhost:4000/user";
+    const url = `${process.env.REACT_APP_BACKEND_URL}/user`;
     const { data } = await axios.get(url, {
       headers,
     });

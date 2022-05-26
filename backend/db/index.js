@@ -7,6 +7,7 @@ async function createConnection() {
     user: config.db.user,
     password: config.db.password,
     database: config.db.db,
+    port: config.db.port,
   });
 
   return connection;
@@ -27,7 +28,7 @@ async function getConnection() {
 const query = async (sql, params) => {
   const connection = await getConnection();
 
-  await connection.query("USE ms_engage");
+  await connection.query("USE 78lkOb0Ekh");
 
   const res = await connection.query(sql, params);
 

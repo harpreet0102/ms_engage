@@ -24,7 +24,7 @@ function SignUpForm() {
       formData.append("file", selectedFile);
 
       const { data } = await axios.post(
-        "http://localhost:4000/users",
+        `${process.env.REACT_APP_BACKEND_URL}/users`,
         formData
       );
       console.log("data ", data);
