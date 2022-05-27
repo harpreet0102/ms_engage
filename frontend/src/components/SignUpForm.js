@@ -2,7 +2,15 @@ import React, { useState } from "react";
 import dotenv from "dotenv";
 
 import "antd/dist/antd.css";
-import { Form, Input, Button, Checkbox, Card, notification } from "antd";
+import {
+  Form,
+  Input,
+  Button,
+  Checkbox,
+  Card,
+  notification,
+  message,
+} from "antd";
 import {
   UserOutlined,
   LockOutlined,
@@ -16,7 +24,6 @@ function SignUpForm() {
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
-    console.log("values", values);
     const { userName, email, password, image } = values;
     try {
       const formData = new FormData();
@@ -29,7 +36,6 @@ function SignUpForm() {
         `${process.env.REACT_APP_BACKEND_URL}/api/users`,
         formData
       );
-      console.log("data ", data);
       if (data.success) {
         notification.success({
           message: "User registered successfully!",
@@ -52,7 +58,13 @@ function SignUpForm() {
   };
 
   const [selectedFile, setSelectedFile] = useState(null);
+  const [showSubmit, setShowSubmit] = useState(false);
   const onChangeHandler = (event) => {
+    if (!event.target.files[0].type.includes("image")) {
+      message.error("Please upload an image only!");
+      return;
+    }
+    setShowSubmit(true);
     setSelectedFile(event.target.files[0]);
   };
   return (
@@ -157,6 +169,7 @@ function SignUpForm() {
 
           <Form.Item>
             <Button
+              disabled={!showSubmit}
               type="primary"
               htmlType="submit"
               className="login-form-button"

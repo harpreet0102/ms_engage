@@ -12,7 +12,6 @@ function Posts() {
   const fetchPost = async () => {
     try {
       const token = localStorage.getItem("token") || "";
-      console.log("token", token);
 
       const headers = {
         authorization: `Bearer ${token}`,
@@ -23,7 +22,6 @@ function Posts() {
           headers,
         }
       );
-      console.log("data", data);
       setData(data);
     } catch (error) {
       console.log("Error - ", error);
@@ -35,7 +33,6 @@ function Posts() {
   }, []);
 
   const getPosts = () => {
-    console.log("-----", data);
     return data.map((post) => {
       return (
         <>

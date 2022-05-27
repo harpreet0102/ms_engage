@@ -11,7 +11,6 @@ function LoginForm() {
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
-    console.log("Received values of form: ", values);
     const { userName, password } = values;
 
     try {
@@ -22,9 +21,6 @@ function LoginForm() {
           password,
         }
       );
-      // navigate("/dashboard");
-
-      console.log("data", data);
 
       if (data.success) {
         localStorage.setItem("token", data.accessToken);
@@ -135,7 +131,7 @@ function LoginForm() {
           style={{
             borderRadius: 5,
           }}
-          onClick={() => navigate("/register")}
+          onClick={() => navigate("/")}
         >
           Register
         </Button>

@@ -24,11 +24,9 @@ function AddPosts() {
   });
 
   const onFinish = async (values) => {
-    console.log("Received values of form: ", values);
     const { description } = values;
 
     const token = localStorage.getItem("token") || "";
-    console.log("token", token);
     const headers = {
       authorization: `Bearer ${token}`,
     };

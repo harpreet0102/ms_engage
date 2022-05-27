@@ -2,10 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import * as faceapi from "face-api.js";
 import dotenv from "dotenv";
 
-import * as canvas from "canvas";
-import WebCam from "react-webcam";
 import { LoadingOutlined } from "@ant-design/icons";
-
 import axios from "axios";
 import { message, notification, Spin } from "antd";
 import Countdown from "antd/lib/statistic/Countdown";
@@ -55,7 +52,6 @@ function DetectFace2({ detectSignedInUser, setRecognisedFaceDetail }) {
     var list = [];
     var labelList = new Array();
     const token = localStorage.getItem("token") || "";
-    console.log("token", token);
     const headers = {
       authorization: `Bearer ${token}`,
     };
@@ -73,9 +69,7 @@ function DetectFace2({ detectSignedInUser, setRecognisedFaceDetail }) {
       labelList.push(user.userName);
       userDetail[user.userName] = user;
     });
-    console.log("labellist", labelList, userDetail);
     setUserDetail(userDetail);
-    console.log("userDetail", userDetail);
 
     return labelList;
   };
@@ -104,14 +98,10 @@ function DetectFace2({ detectSignedInUser, setRecognisedFaceDetail }) {
             // const img = await canvas.loadImage(
             //   `labeled_images/${label}/${i}.jpg`
             // );
-            console.log(
-              "imageUrl",
-              "https://raw.githubusercontent.com/harpreet0102/ms_engage/main/frontend/src/labeled_images/taran/1.jpg?token=GHSAT0AAAAAABUXWPCKUWMGLXZ342F7IRPCYULFM4A"
-            );
+
             const img = await faceapi.fetchImage(
               `/labeled_images/${label}/${i}.jpg`
             );
-            console.log("------------------");
             const detections = await faceapi
               .detectSingleFace(img)
               .withFaceLandmarks()
@@ -191,7 +181,6 @@ function DetectFace2({ detectSignedInUser, setRecognisedFaceDetail }) {
         console.log("results", results, stopDetection);
         if (results.length > 0 && results[0]["_label"] != "unknown") {
           // window.alert(results[0]["_label"]);
-          console.log(userDetail);
           notification.success({
             message: "Face recognised successfully!",
             description: `UserName - ${results[0]["_label"]} and  
@@ -217,63 +206,6 @@ function DetectFace2({ detectSignedInUser, setRecognisedFaceDetail }) {
         }
       }
     }, 1000);
-
-    // setInterval(async () => {
-    //   if (canvasRef && canvasRef.current) {
-    //     canvasRef.current.innerHTML = faceapi.createCanvasFromMedia(
-    //       videoRef.current
-    //     );
-    //     const displaySize = {
-    //       width: videoWidth,
-    //       height: videoHeight,
-    //     };
-
-    //     faceapi.matchDimensions(canvasRef.current, displaySize);
-
-    //     const detections = await faceapi
-    //       .detectAllFaces(
-    //         videoRef.current,
-    //         new faceapi.TinyFaceDetectorOptions()
-    //       )
-    //       .withFaceLandmarks()
-    //       .withFaceExpressions()
-    //       .withAgeAndGender()
-    //       .withFaceDescriptors();
-
-    //     const resizedDetections = faceapi.resizeResults(
-    //       detections,
-    //       displaySize
-    //     );
-
-    //     canvasRef &&
-    //       canvasRef.current &&
-    //       canvasRef.current
-    //         .getContext("2d")
-    //         .clearRect(0, 0, videoWidth, videoHeight);
-    //     canvasRef &&
-    //       canvasRef.current &&
-    //       faceapi.draw.drawDetections(canvasRef.current, resizedDetections);
-    //     canvasRef &&
-    //       canvasRef.current &&
-    //       faceapi.draw.drawFaceLandmarks(canvasRef.current, resizedDetections);
-    //     canvasRef &&
-    //       canvasRef.current &&
-    //       faceapi.draw.drawFaceExpressions(
-    //         canvasRef.current,
-    //         resizedDetections
-    //       );
-
-    //     const results = resizedDetections.map((d) =>
-    //       faceMatcher.findBestMatch(d.descriptor)
-    //     );
-    //     console.log("results", results);
-    //     if (results.length > 0 && results[0]["_label"] != "unknown") {
-    //       window.alert(results[0]["_label"]);
-    //       setFaceRecognised(true);
-    //       return;
-    //     }
-    //   }
-    // }, 100);
   };
 
   const closeWebcam = () => {
@@ -281,8 +213,6 @@ function DetectFace2({ detectSignedInUser, setRecognisedFaceDetail }) {
     videoRef.current.srcObject.getTracks()[0].stop();
     setCaptureVideo(false);
   };
-
-  console.log("captureVideo", captureVideo);
 
   return (
     <div>

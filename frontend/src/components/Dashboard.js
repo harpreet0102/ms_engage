@@ -17,7 +17,6 @@ const Dashboard = () => {
 
   const getUser = async () => {
     const token = localStorage.getItem("token") || "";
-    console.log("token", token);
     const headers = {
       authorization: `Bearer ${token}`,
     };
@@ -25,8 +24,6 @@ const Dashboard = () => {
     const { data } = await axios.get(url, {
       headers,
     });
-
-    console.log("-", data);
 
     setUser(data[0]);
   };
