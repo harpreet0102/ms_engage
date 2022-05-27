@@ -27,7 +27,7 @@ function Posts() {
       setData(data);
     } catch (error) {
       console.log("Error - ", error);
-      message.error("Please login to continue");
+      message.error("Please refresh the page!");
     }
   };
   useEffect(() => {

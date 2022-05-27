@@ -30,14 +30,20 @@ function LoginForm() {
         localStorage.setItem("token", data.accessToken);
         notification.success({
           message: "User loggedIn successfully!",
-          style: { height: 75 },
+          style: { height: 60 },
         });
         navigate("/dashboard");
       } else {
-        notification.error("Failed to register user");
+        notification.error({
+          message: "Failed to login user. Please register!",
+          style: { height: 60, backgroundColor: "red" },
+        });
       }
     } catch (error) {
-      notification.error("Failed to register user");
+      notification.error({
+        message: "Failed to login user",
+        style: { height: 60, backgroundColor: "red" },
+      });
     }
   };
   return (

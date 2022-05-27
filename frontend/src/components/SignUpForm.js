@@ -33,14 +33,21 @@ function SignUpForm() {
       if (data.success) {
         notification.success({
           message: "User registered successfully!",
-          style: { height: 75 },
+          style: { height: 70 },
         });
+        navigate("/login");
       } else {
-        notification.error("Failed to register user");
+        notification.error({
+          message: `${data.message}. Please Login`,
+          style: { height: 70 },
+        });
+        navigate("/login");
       }
-      // history.push("/");
     } catch (error) {
-      notification.error("Failed to register user");
+      notification.error({
+        message: "Failed to login user",
+        style: { height: 70 },
+      });
     }
   };
 

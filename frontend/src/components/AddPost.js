@@ -17,14 +17,11 @@ import DetectFace2 from "./DetectFace2";
 const { Meta } = Card;
 
 function AddPosts() {
-  const [description, setDescription] = useState("");
-  const [openWebCam, setOpenWebcam] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [recognisedFaceDetail, setRecognisedFaceDetail] = useState({
     faceRecognised: false,
     recognisedUserName: "",
   });
-  // const [userDetail]
 
   const onFinish = async (values) => {
     console.log("Received values of form: ", values);
@@ -44,7 +41,6 @@ function AddPosts() {
           headers,
         }
       );
-      // navigate("/dashboard");
 
       if (data.success) {
         notification.success({
@@ -85,7 +81,6 @@ function AddPosts() {
             width={800}
             visible={true}
             title="Add post"
-            // onOk={handleOk}
             onCancel={handleCancel}
           >
             {recognisedFaceDetail.faceRecognised ? (
