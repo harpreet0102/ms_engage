@@ -16,16 +16,15 @@ import {
 import DetectFace2 from "./DetectFace2";
 const { Meta } = Card;
 
-function AddPosts() {
+function AddPosts({ fetchPost }) {
+  const [description, setDescription] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [recognisedFaceDetail, setRecognisedFaceDetail] = useState({
     faceRecognised: false,
     recognisedUserName: "",
   });
 
-  const onFinish = async (values) => {
-    const { description } = values;
-
+  const onFinish = async () => {
     const token = localStorage.getItem("token") || "";
     const headers = {
       authorization: `Bearer ${token}`,
@@ -45,17 +44,14 @@ function AddPosts() {
           message: "Post added successfully!",
           style: { height: 75 },
         });
+        setOpenModal(false);
+        fetchPost();
       } else {
         notification.error("Failed to add post");
       }
     } catch (error) {
       notification.error("Failed to add post");
     }
-  };
-
-  const handleOk = () => {
-    onFinish();
-    setOpenModal(false);
   };
 
   const handleCancel = () => {
@@ -80,6 +76,7 @@ function AddPosts() {
             visible={true}
             title="Add post"
             onCancel={handleCancel}
+            onOk={onFinish}
           >
             {recognisedFaceDetail.faceRecognised ? (
               <>
@@ -90,7 +87,7 @@ function AddPosts() {
                 <br />
                 <br />
                 <br />
-                <Form
+                {/* <Form
                   name="normal_login"
                   className="login-form"
                   initialValues={{
@@ -120,7 +117,12 @@ function AddPosts() {
                       Add Post
                     </Button>
                   </Form.Item>
-                </Form>
+                </Form> */}
+                <Input
+                  placeholder="Post Description"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                />
               </>
             ) : (
               <DetectFace2

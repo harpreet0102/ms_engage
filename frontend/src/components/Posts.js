@@ -71,7 +71,7 @@ function Posts() {
     <>
       <Row>
         <Col span={18}></Col>
-        <AddPosts></AddPosts>
+        <AddPosts fetchPost={fetchPost}></AddPosts>
       </Row>
       <br />
       {getPosts()}

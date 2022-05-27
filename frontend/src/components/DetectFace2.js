@@ -124,6 +124,10 @@ function DetectFace2({ detectSignedInUser, setRecognisedFaceDetail }) {
 
     var stopDetection = false;
 
+    if (!modelsLoaded) {
+      return;
+    }
+
     if (detectSignedInUser) {
       setTimeout(() => (stopDetection = true), 30000);
     }

@@ -4,12 +4,16 @@ import jwt_decode from "jwt-decode";
 import axios from "axios";
 import DetectFace2 from "./DetectFace2";
 import Posts from "./Posts";
-import { Button, Row, Col, message } from "antd";
+import { Button, Row, Col, message, Alert } from "antd";
 import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const [user, setUser] = useState({});
-  const [faceRecognised, setFaceRecognised] = useState(false);
+  const [recognisedFaceDetail, setRecognisedFaceDetail] = useState({
+    faceRecognised: false,
+    recognisedUserName: "",
+  });
+
   const navigate = useNavigate();
   useEffect(() => {
     getUser();
@@ -44,10 +48,39 @@ const Dashboard = () => {
           </Button>
           {user && user.role == "ADMIN" ? (
             <>
+              <br />
+              <br />
+              <Alert
+                message="Warning"
+                description="Lot of people are misplaced in recent Assam flood. Use this tool for finding the missing person"
+                type="warning"
+                showIcon
+                closable
+              />
+              <br />
+              <br />
               <DetectFace2
                 detectSignedInUser={false}
-                setFaceRecognised={setFaceRecognised}
+                setRecognisedFaceDetail={setRecognisedFaceDetail}
               ></DetectFace2>
+              {recognisedFaceDetail.faceRecognised ? (
+                <>
+                  <img
+                    src={`/labeled_images/${recognisedFaceDetail.recognisedUserName}/1.jpg`}
+                    style={{ height: 300, width: 300, marginLeft: 200 }}
+                  ></img>
+                  <br />
+                  <br />
+
+                  <div style={{ height: 300, width: 300, marginLeft: 250 }}>
+                    UserName: &nbsp; &nbsp;
+                    <b>{recognisedFaceDetail.recognisedUserName}</b>
+                  </div>
+                  <br />
+                  <br />
+                  <br />
+                </>
+              ) : null}
             </>
           ) : null}
           <Posts></Posts>
