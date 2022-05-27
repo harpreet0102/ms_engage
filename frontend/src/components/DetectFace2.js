@@ -129,7 +129,7 @@ function DetectFace2({ detectSignedInUser, setRecognisedFaceDetail }) {
     }
 
     if (detectSignedInUser) {
-      setTimeout(() => (stopDetection = true), 30000);
+      setTimeout(() => (stopDetection = true), 15000);
     }
 
     // setInterval(() => setTimeCount(timeCount - 1), 1000);
@@ -229,7 +229,7 @@ function DetectFace2({ detectSignedInUser, setRecognisedFaceDetail }) {
               marginLeft: 90,
               marginBottom: 30,
             }}
-            tip={`Please wait for 30 seconds. Your face is being recognised`}
+            tip={`Please wait for 15 seconds. Your face is being recognised!!`}
             indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />}
           />
         </>
