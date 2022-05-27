@@ -1,4 +1,4 @@
-# Order Microservice - Taranjeet Singh
+# Order Microservice - Harpreet Kaur
 
 ## Architecture
 
