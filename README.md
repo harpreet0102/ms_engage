@@ -34,5 +34,6 @@ nodemon server.js
 ```sh
 cd frontend
 npm i
-npm start
+replace REACT_APP_BACKEND_URL with http://localhost:4000
+    npm start
 ```
