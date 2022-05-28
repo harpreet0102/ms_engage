@@ -155,15 +155,21 @@ function DetectFace2({ detectSignedInUser, setRecognisedFaceDetail }) {
 
         faceapi.matchDimensions(canvasRef.current, displaySize);
 
-        const detections = await faceapi
-          .detectAllFaces(
-            videoRef.current,
-            new faceapi.TinyFaceDetectorOptions()
-          )
-          .withFaceLandmarks()
-          .withFaceExpressions()
-          .withAgeAndGender()
-          .withFaceDescriptors();
+        let detections = null;
+
+        try {
+          detections = await faceapi
+            .detectAllFaces(
+              videoRef.current,
+              new faceapi.SsdMobilenetv1Options()
+            )
+            .withFaceLandmarks()
+            .withFaceExpressions()
+            .withAgeAndGender()
+            .withFaceDescriptors();
+        } catch (err) {
+          console.log("err here", err);
+        }
 
         const resizedDetections = faceapi.resizeResults(
           detections,
