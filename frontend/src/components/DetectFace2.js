@@ -103,10 +103,15 @@ function DetectFace2({ detectSignedInUser, setRecognisedFaceDetail }) {
               `/labeled_images/${label}/${i}.jpg`
             );
             console.log("models loaded-1", modelsLoaded);
-            const detections = await faceapi
-              .detectSingleFace(img, new faceapi.SsdMobilenetv1Options())
-              .withFaceLandmarks()
-              .withFaceDescriptor();
+            let detections = null;
+            try {
+              detections = await faceapi
+                .detectSingleFace(img, new faceapi.SsdMobilenetv1Options())
+                .withFaceLandmarks()
+                .withFaceDescriptor();
+            } catch (err) {
+              console.log("final-err", err);
+            }
             console.log("detections", detections);
             descriptions.push(detections.descriptor);
           } catch (err) {
