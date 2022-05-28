@@ -102,6 +102,7 @@ function DetectFace2({ detectSignedInUser, setRecognisedFaceDetail }) {
             const img = await faceapi.fetchImage(
               `/labeled_images/${label}/${i}.jpg`
             );
+            console.log("models loaded-1", modelsLoaded);
             const detections = await faceapi
               .detectSingleFace(img)
               .withFaceLandmarks()
@@ -132,6 +133,8 @@ function DetectFace2({ detectSignedInUser, setRecognisedFaceDetail }) {
     var faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.5);
 
     var stopDetection = false;
+
+    console.log("modelsLoaded-2", modelsLoaded);
 
     if (!modelsLoaded) {
       return;
