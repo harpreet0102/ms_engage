@@ -102,7 +102,6 @@ function DetectFace2({ detectSignedInUser, setRecognisedFaceDetail }) {
             const img = await faceapi.fetchImage(
               `/labeled_images/${label}/${i}.jpg`
             );
-            console.log("models loaded-1", modelsLoaded);
             const detections = await faceapi
               .detectSingleFace(img)
               .withFaceLandmarks()
@@ -116,16 +115,7 @@ function DetectFace2({ detectSignedInUser, setRecognisedFaceDetail }) {
         }
         return new faceapi.LabeledFaceDescriptors(label, descriptions);
       })
-    ).catch((err) => {
-      console.log("err------------", err);
-      return (
-        <>
-          {message.error(
-            "Please refresh the page. Models could  not be loaded"
-          )}
-        </>
-      );
-    });
+    );
   };
 
   const handleVideoOnPlay = async () => {
@@ -133,8 +123,6 @@ function DetectFace2({ detectSignedInUser, setRecognisedFaceDetail }) {
     var faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.5);
 
     var stopDetection = false;
-
-    console.log("modelsLoaded-2", modelsLoaded);
 
     if (!modelsLoaded) {
       return;
@@ -158,21 +146,15 @@ function DetectFace2({ detectSignedInUser, setRecognisedFaceDetail }) {
 
         faceapi.matchDimensions(canvasRef.current, displaySize);
 
-        let detections = null;
-
-        try {
-          detections = await faceapi
-            .detectAllFaces(
-              videoRef.current,
-              new faceapi.TinyFaceDetectorOptions()
-            )
-            .withFaceLandmarks()
-            .withFaceExpressions()
-            .withAgeAndGender()
-            .withFaceDescriptors();
-        } catch (err) {
-          console.log("err here", err);
-        }
+        const detections = await faceapi
+          .detectAllFaces(
+            videoRef.current,
+            new faceapi.TinyFaceDetectorOptions()
+          )
+          .withFaceLandmarks()
+          .withFaceExpressions()
+          .withAgeAndGender()
+          .withFaceDescriptors();
 
         const resizedDetections = faceapi.resizeResults(
           detections,
