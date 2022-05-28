@@ -115,7 +115,16 @@ function DetectFace2({ detectSignedInUser, setRecognisedFaceDetail }) {
         }
         return new faceapi.LabeledFaceDescriptors(label, descriptions);
       })
-    );
+    ).catch((err) => {
+      console.log("err------------", err);
+      return (
+        <>
+          {message.error(
+            "Please refresh the page. Models could  not be loaded"
+          )}
+        </>
+      );
+    });
   };
 
   const handleVideoOnPlay = async () => {
