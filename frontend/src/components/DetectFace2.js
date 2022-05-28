@@ -104,7 +104,7 @@ function DetectFace2({ detectSignedInUser, setRecognisedFaceDetail }) {
             );
             console.log("models loaded-1", modelsLoaded);
             const detections = await faceapi
-              .detectSingleFace(img)
+              .detectSingleFace(img, new faceapi.SsdMobilenetv1Options())
               .withFaceLandmarks()
               .withFaceDescriptor();
             console.log("detections", detections);
