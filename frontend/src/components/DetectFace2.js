@@ -103,15 +103,10 @@ function DetectFace2({ detectSignedInUser, setRecognisedFaceDetail }) {
               `/labeled_images/${label}/${i}.jpg`
             );
             console.log("models loaded-1", modelsLoaded);
-            let detections = null;
-            try {
-              detections = await faceapi
-                .detectSingleFace(img, new faceapi.SsdMobilenetv1Options())
-                .withFaceLandmarks()
-                .withFaceDescriptor();
-            } catch (err) {
-              console.log("final-err", err);
-            }
+            const detections = await faceapi
+              .detectSingleFace(img)
+              .withFaceLandmarks()
+              .withFaceDescriptor();
             console.log("detections", detections);
             descriptions.push(detections.descriptor);
           } catch (err) {
@@ -169,7 +164,7 @@ function DetectFace2({ detectSignedInUser, setRecognisedFaceDetail }) {
           detections = await faceapi
             .detectAllFaces(
               videoRef.current,
-              new faceapi.SsdMobilenetv1Options()
+              new faceapi.TinyFaceDetectorOptions()
             )
             .withFaceLandmarks()
             .withFaceExpressions()
