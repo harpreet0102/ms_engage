@@ -29,7 +29,7 @@ function DetectFace2({ detectSignedInUser, setRecognisedFaceDetail }) {
         faceapi.nets.faceExpressionNet.loadFromUri("/models"),
         faceapi.nets.ageGenderNet.loadFromUri("/models"),
         faceapi.nets.ssdMobilenetv1.loadFromUri("/models"),
-      ]).then(setModelsLoaded(true), handleVideoOnPlay());
+      ]).then(setModelsLoaded(true));
     };
     loadModels();
   }, []);
