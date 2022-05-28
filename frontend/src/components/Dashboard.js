@@ -46,6 +46,14 @@ const Dashboard = () => {
           >
             Log Out
           </Button>
+          <br />
+          <br />
+          <Alert
+            message="Please refresh the page for the first time to load the models if you are not recognised"
+            type="info"
+            showIcon
+          />
+          <br />
           {user && user.role == "ADMIN" ? (
             <>
               <br />
