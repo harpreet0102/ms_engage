@@ -25,6 +25,9 @@
 
 Run locally
 
+In the Backend, Add .env file with the DB credentials shared.
+Find the DB Schema in db.sql file in backend.
+
 ```sh
 cd backend
 npm i
@@ -34,6 +37,16 @@ nodemon server.js
 ```sh
 cd frontend
 npm i
-replace REACT_APP_BACKEND_URL with http://localhost:4000
-    npm start
+npm start
 ```
+
+[Video Demo link](https://drive.google.com/file/d/1tb7zgxR7oOcQiFJomKmT3A41DEalTkCU/view)
+
+### Tasks
+
+- [x] Code Performance
+- [x] Coding best Practices
+- [x] Number of Functional Features
+- [x] User Interface and User Experience
+- [x] Demo
+- [x] The X Factor - UI, Deployment
